@@ -4,10 +4,10 @@
 
 ## VSCode
 - theme: `Dark Modern`
-- font family: `'UDEV Gothic 35LG', ...`
+- font family: `'UDEV Gothic 35NFLG', ...`
 
 ## Windows Terminal
-- Font face: `UDEV Gothic 35LG`
+- Font face: `UDEV Gothic 35NFLG`
 - theme: `Material Darker`
   - Setiings > Open JSON file
 ```
