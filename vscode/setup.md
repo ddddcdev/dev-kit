@@ -36,4 +36,5 @@
     },
     "isort.args": ["--profile", "black"]
 }
+```
 
