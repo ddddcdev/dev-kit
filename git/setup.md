@@ -21,32 +21,42 @@ git config user.email "xxxxxxxx@users.noreply.github.com"
 
 ---
 
-## 🔷WSLでのGit Credential Manager設定手順（推奨） ※未確認
-
-1. **Windows側で「Git for Windows」をインストール**  
-   - [公式ダウンロードページ](https://git-scm.com/download/win)
-
-2. **Credential Manager Coreのパスを確認**  
-   - 一般的なパス例：
-     - `C:\Program Files\Git\mingw64\libexec\git-core\git-credential-manager.exe`
-     - または
-     - `C:\Program Files\Git Credential Manager Core\git-credential-manager-core.exe`
-
-3. **WSLからcredential.helperにパスを設定**
-
-    ```bash
-    git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-manager.exe"
-    ```
-
-    - 上記はパスに空白が含まれるため、`\`でエスケープすること
-    - パスは環境により異なる場合があるため、確認のこと
-
-4. **以降は最初の認証情報入力後、自動でWindows資格情報マネージャに暗号化保存される**
-
 ## 🔷GitHubのrepositoryごとに認証を保存する設定(Mac)
 ```bash
 git config --global credential.https://github.com.useHttpPath true
 
 # 既存の認証を削除する場合は
 printf "protocol=https\nhost=github.com\n" | git credential-osxkeychain erase
+```
+
+## Install Git Credential Manager (WSL)
+
+- GCMをダウンロード・インストール(Windows版)
+  - https://aka.ms/gcm
+
+```bash
+# 現状の設定
+git config --global credential.helper
+
+# GCMを確認
+/mnt/c/Program\ Files\ \(x86\)/Git\ Credential\ Manager/git-credential-manager.exe --version
+# 2.6.1+786ab03440ddc82e807a97c0e540f5247e44cec6
+
+# GCMを設定
+git config --global credential.helper "/mnt/c/Program\ Files\ \(x86\)/Git\ Credential\ Manager/git-credential-manager.exe"
+
+# GCMを確認
+git config --global credential.helper
+# /mnt/c/Program\ Files\ \(x86\)/Git\ Credential\ Manager/git-credential-manager.exe
+
+
+## change default editor
+```bash
+git config --global core.editor vi
+```
+
+## hint: You have divergent branches and need to specify how to reconcile them.
+```bash
+git config --global pull.rebase false
+
 ```
