@@ -83,6 +83,9 @@ line_length = 120
 [tool.black]
 line-length = 120
 target-version = ["py3.13"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
 ```
 
 ## Poetry commands after updating pyproject.toml
