@@ -38,6 +38,18 @@ pyenv install 3.13 # or any version you need
 pyenv local 3.13
 ```
 
+## Example: Search and Add a Package
+You can search for packages and add a specific version using poetry:
+
+```bash
+poetry search streamlit | tail -3
+# Example output:
+# streamlit 1.49.0  PyPI
+# streamlit 1.49.1  PyPI
+# streamlit 1.50.0  PyPI
+
+poetry add streamlit@1.50.0
+```
 ## Create a virtual environment in the project directory
 ```bash
 poetry config virtualenvs.in-project true --local
