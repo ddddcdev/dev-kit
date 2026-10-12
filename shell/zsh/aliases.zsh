@@ -7,6 +7,15 @@ alias pi='pip install'
 alias pu='pip uninstall'
 alias pes='pipenv shell'
 
+# uv: load ./.env only when it exists (uv errors on a missing UV_ENV_FILE). An explicit UV_ENV_FILE wins.
+uv() {
+  if [[ -z ${UV_ENV_FILE+x} && -f .env ]]; then
+    UV_ENV_FILE=.env command uv "$@"
+  else
+    command uv "$@"
+  fi
+}
+
 # 履歴確認
 alias h='history'
 alias hg='history | grep'
