@@ -1,0 +1,20 @@
+# visibility-guard policy. Copy (or symlink) to ~/.config/git/visibility-policy.toml.
+# public:   what to do when the push target is a PUBLIC repo
+#           allow | confirm (needs ALLOW_PUBLIC_PUSH=1) | deny
+# on_error: what to do when visibility cannot be determined (offline, rate limit)
+#           allow | deny
+
+[defaults]
+public = "allow"
+on_error = "allow"
+hosts = ["github.com"]
+allow_public = ["alice/legacy-tool"]  # owner/repo exceptions
+
+# Personal accounts: everything stays private
+[owners.alice]
+public = "deny"
+
+# Organization used for releases: public push only on purpose
+[owners.acme-oss]
+public = "confirm"
+on_error = "deny"
