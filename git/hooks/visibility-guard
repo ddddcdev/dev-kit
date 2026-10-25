@@ -1,0 +1,10 @@
+#!/bin/sh
+# Locate a Python interpreter and run the visibility guard.
+here=$(dirname "$0")
+for py in python3 python; do
+	if command -v "$py" >/dev/null 2>&1; then
+		exec "$py" "$here/visibility_guard.py" "$@"
+	fi
+done
+echo "visibility-guard: python not found, skipped" >&2
+exit 0

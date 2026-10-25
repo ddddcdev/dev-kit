@@ -1,0 +1,40 @@
+#!/bin/sh
+# Global hook dispatcher for core.hooksPath.
+# Each hook stub execs this with its own name. Runs the built-in guards for that
+# hook, then the repo-local hook (.git/hooks/<name>), which core.hooksPath would
+# otherwise shadow.
+
+name=$1
+shift
+here=$(cd "$(dirname "$0")" && pwd)
+common=$(git rev-parse --git-common-dir) || exit 1
+local_dir=$(cd "$common/hooks" 2>/dev/null && pwd)
+local_hook="$local_dir/$name"
+
+# Hooks that receive data on stdin: buffer it so every runner gets a copy.
+stdin_file=
+case "$name" in
+	pre-push | post-rewrite)
+		stdin_file=$(mktemp) || exit 1
+		trap 'rm -f "$stdin_file"' EXIT
+		cat >"$stdin_file"
+		;;
+esac
+
+run() {
+	if [ -n "$stdin_file" ]; then
+		"$@" <"$stdin_file"
+	else
+		"$@"
+	fi
+}
+
+if [ "$name" = pre-push ]; then
+	run sh "$here/visibility-guard" "$@" || exit $?
+fi
+
+# Skip when core.hooksPath points at .git/hooks itself (would recurse).
+if [ -n "$local_dir" ] && [ "$local_dir" != "$here" ] && [ -x "$local_hook" ]; then
+	run "$local_hook" "$@" || exit $?
+fi
+exit 0
