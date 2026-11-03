@@ -2,33 +2,61 @@
 
 Personal tools, not a general standard (see the README).
 
+Create a bookmark and paste the code as its URL. Copying uses the async Clipboard API and falls
+back to `execCommand('copy')` where it is not available.
+
+## Copy
 
 ### 📋️Title+URL
+
+Page title and URL on two lines.
+
 ```js
-javascript:(function(){e = document.createElement('textarea');e.textContent = document.title + '\r\n' + document.URL;document.body.appendChild(e);e.select();document.execCommand('copy');e.remove();})();
+javascript:(()=>{const c=(p,h)=>(h?navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([p],{type:'text/plain'}),'text/html':new Blob([h],{type:'text/html'})})]):navigator.clipboard.writeText(p)).catch(()=>{const e=document.createElement('textarea');e.value=p;document.body.appendChild(e);e.select();document.execCommand('copy');e.remove()});c(document.title+'\n'+location.href)})();
 ```
 
-## 📋️\[md\]
-```js
+### 📋️[md]
 
+Markdown link `[title](url)`. Uses the selected text as the title when there is a selection.
+
+```js
+javascript:(()=>{const c=(p,h)=>(h?navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([p],{type:'text/plain'}),'text/html':new Blob([h],{type:'text/html'})})]):navigator.clipboard.writeText(p)).catch(()=>{const e=document.createElement('textarea');e.value=p;document.body.appendChild(e);e.select();document.execCommand('copy');e.remove()});const t=(getSelection().toString()||document.title).replace(/[\[\]]/g,'\\$&');c('['+t+']('+location.href+')')})();
 ```
 
-## 📋️LINK
+### 📋️LINK
+
+Rich link (HTML) for pasting into documents and chat apps; plain text is the title. Uses the
+selected text when there is a selection. Shows "Copied" for 1.5 s.
+
 ```js
-javascript:(function(){const t=window.getSelection().toString()||document.title,u=window.location.href,l=`<a href="${u}" id="bookmarklet-link" style="color:white;text-decoration:none;">${t}</a>`,e=document.createElement('div');e.innerHTML=l;e.style.cssText="position:fixed;top:0;left:50%;transform:translateX(-50%);z-index:9999;background-color:black;padding:5px;border-radius:5px";document.body.appendChild(e);const r=document.createRange(),n=document.getElementById('bookmarklet-link');r.selectNode(n);const s=window.getSelection();s.removeAllRanges();s.addRange(r);try{const o=document.execCommand('copy');if(!o){alert('Unable to copy the link. Please try another method.');}}catch(err){alert('Unable to copy the link. Please try another method.');}})();
+javascript:(()=>{const c=(p,h)=>(h?navigator.clipboard.write([new ClipboardItem({'text/plain':new Blob([p],{type:'text/plain'}),'text/html':new Blob([h],{type:'text/html'})})]):navigator.clipboard.writeText(p)).catch(()=>{const e=document.createElement('textarea');e.value=p;document.body.appendChild(e);e.select();document.execCommand('copy');e.remove()});const t=getSelection().toString()||document.title,u=location.href,x=s=>s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m]);c(t,'<a href="'+x(u)+'">'+x(t)+'</a>').then(()=>{const d=document.createElement('div');d.textContent='Copied: '+t;d.style.cssText='position:fixed;top:8px;left:50%25;transform:translateX(-50%25);z-index:2147483647;background:#000;color:#fff;padding:4px 10px;border-radius:5px;font:13px sans-serif';document.body.appendChild(d);setTimeout(()=>d.remove(),1500)})})();
 ```
+
+## Wide chat view
+
+Click once to widen the conversation to the window, again to restore. Each one targets the site's
+current markup and breaks when the site changes it. Last checked 2026-11-03.
 
 ### ↔ ChatGPT
+
+Overrides the conversation width variable; also wraps long code lines.
+
 ```js
-javascript:(()=>{try{const id="cgpt-fw-final-v6";document.getElementById(id)?.remove();const s=document.createElement("style");s.id=id;s.textContent=%27html,body{overflow-x:hidden!important;margin:0!important;padding:0!important}main,[role="main"],.container,.mx-auto{max-width:none!important;width:100%!important;margin:0!important;padding:0!important}[class*="px-(--thread-content-margin)"]{padding-left:.25rem!important;padding-right:.25rem!important}[class*="md:px-[60px]"]{padding-left:.25rem!important;padding-right:.25rem!important}.agent-turn,[class*="agent-turn"]{margin-right:0!important}.max-w-3xl,.max-w-4xl,.max-w-5xl,.max-w-6xl,.max-w-7xl,.max-w-screen-lg,.max-w-screen-xl{max-width:none!important;width:100%!important;margin:0!important}pre,code,kbd,samp{max-width:100%!important}pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important;word-break:break-word!important;overflow-x:auto!important}code{overflow-wrap:anywhere!important;word-break:break-word!important}a{overflow-wrap:anywhere!important;word-break:break-word!important}*{box-sizing:border-box!important}*{scrollbar-gutter:auto!important}%27;document.head.appendChild(s);document.querySelectorAll(%27[class*="px-(--thread-content-margin)"]%27).forEach(e=>{e.style.setProperty("--thread-content-margin","0px","important");e.style.paddingLeft=".25rem";e.style.paddingRight=".25rem"});document.querySelectorAll(".agent-turn,[class*=%27agent-turn%27]").forEach(e=>{e.style.marginRight="0"})}catch(e){console.error(e)}})();javascript:(()=>{try{const id="cgpt-fw-pad-05em";document.getElementById(id)?.remove();const s=document.createElement("style");s.id=id;s.textContent=%27[class*="px-(--thread-content-margin)"],.agent-turn,[class*="agent-turn"]{padding-left:.5em!important;padding-right:.5em!important}pre{padding-left:.5em!important;padding-right:.5em!important}%27;document.head.appendChild(s)}catch(e){console.error(e)}})();
+javascript:(()=>{const id='dk-wide',o=document.getElementById(id);if(o){o.remove();return}const s=document.createElement('style');s.id=id;s.textContent='[class*="--thread-content-max-width"]{--thread-content-max-width:100%25!important;--thread-body-max-width:100%25!important}pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important}';document.head.appendChild(s)})();
 ```
 
 ### ↔ Gemini
+
+Lifts the width cap inside the conversation (images keep theirs) with a 24px side margin.
+
 ```js
-javascript:(()=>{const f=()=>document.querySelectorAll("*").forEach(e=>{const s=getComputedStyle(e);if(s.maxWidth!=="none"&&e.style.maxWidth!=="100%")e.style.maxWidth="100%"});f();new MutationObserver(f).observe(document.body,{childList:true,subtree:true});console.log("Monitoring and stretching all new elements...")})();
+javascript:(()=>{const id='dk-wide',o=document.getElementById(id);if(o){o.remove();return}const s=document.createElement('style');s.id=id;s.textContent='.conversation-container{padding-inline:24px!important;box-sizing:border-box}.conversation-container :not(img,svg,video,canvas,picture){max-width:none!important}.conversation-container .table-content{padding-inline:0!important}';document.head.appendChild(s)})();
 ```
 
 ### ↔ Perplexity
+
+Lifts the thread width cap and collapses the empty side columns.
+
 ```js
-javascript:(()=>{const s=document.createElement('style');s.innerHTML=`main,.flex-1,.w-full,.m-auto,.mx-auto,.xl\\:max-w-3xl,.md\\:max-w-3xl{max-width:100%!important;width:100%!important;margin:0!important}.lg\\:max-w-screen-lg,.xl\\:max-w-screen-xl{max-width:100%!important}.px-4,.sm\\:px-6{padding-left:1rem!important;padding-right:1rem!important}`;document.head.appendChild(s);})();
+javascript:(()=>{const id='dk-wide',o=document.getElementById(id);if(o){o.remove();return}const s=document.createElement('style');s.id=id;s.textContent='.max-w-threadContentWidth,.prose{max-width:none!important}[class*="grid-cols-[var(--context-pane-width)"]{--context-pane-width:0px!important}';document.head.appendChild(s)})();
 ```
