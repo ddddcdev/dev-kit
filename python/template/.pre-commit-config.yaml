@@ -1,0 +1,10 @@
+# Same gate as `make check`. Install once per clone (see dev-kit python/README.md):
+#   GIT_CONFIG_GLOBAL=/dev/null uv run pre-commit install
+repos:
+  - repo: local
+    hooks:
+      - id: make-check
+        name: make check
+        entry: make check
+        language: system
+        pass_filenames: false

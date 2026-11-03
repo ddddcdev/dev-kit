@@ -1,0 +1,72 @@
+#!/bin/sh
+# Check this machine against dev-kit. Read-only; prints OK / WARN / NG per item, exits 1 on any NG.
+# Usage: sh ~/repo/dev-kit/bin/doctor
+kit=$(cd "$(dirname "$0")/.." && pwd)
+ng=0
+
+ok() { printf 'OK    %s\n' "$1"; }
+warn() { printf 'WARN  %s\n' "$1"; }
+bad() { printf 'NG    %s\n' "$1"; ng=1; }
+
+case "$(uname -s)" in
+Darwin) platform=macos ;;
+Linux) if grep -qi microsoft /proc/version 2>/dev/null; then platform=wsl; else platform=linux; fi ;;
+*) platform=other ;;
+esac
+printf 'dev-kit %s (%s) on %s\n' "$kit" "$(git -C "$kit" rev-parse --short HEAD 2>/dev/null)" "$platform"
+
+# tools
+for t in git zsh curl jq python3 uv tree fzf; do
+	if command -v "$t" >/dev/null 2>&1; then ok "tool $t"; else bad "tool $t missing"; fi
+done
+if command -v python3 >/dev/null 2>&1; then
+	if python3 -c 'import sys; sys.exit(sys.version_info < (3, 11))'; then
+		ok "python3 >= 3.11 ($(python3 -V 2>&1))"
+	else
+		bad "python3 < 3.11 ($(python3 -V 2>&1)): visibility-guard needs tomllib"
+	fi
+fi
+
+# zsh
+zshrc=$HOME/.zshrc
+if grep -q 'dev-kit/shell/zsh/init.zsh' "$zshrc" 2>/dev/null; then ok "zshrc sources init.zsh"; else bad "zshrc does not source shell/zsh/init.zsh"; fi
+if grep -Eq '^[[:space:]]*export[[:space:]]+UV_ENV_FILE=' "$zshrc" 2>/dev/null; then
+	bad "zshrc exports UV_ENV_FILE (remove it; the uv wrapper handles .env)"
+else
+	ok "no global UV_ENV_FILE in zshrc"
+fi
+if [ -d "$HOME/.oh-my-zsh" ]; then ok "oh-my-zsh"; else bad "oh-my-zsh missing"; fi
+if command -v zsh >/dev/null 2>&1; then
+	if zsh -ic 'whence -w uv' 2>/dev/null | grep -q function; then ok "uv wrapper loaded in interactive zsh"; else bad "uv wrapper not loaded in interactive zsh"; fi
+fi
+
+# git
+hooks=$(git config --global --get core.hooksPath)
+if [ "$hooks" = "$kit/git/hooks" ]; then ok "core.hooksPath -> git/hooks"; else bad "core.hooksPath is '${hooks:-unset}' (run git/hooks/install.sh)"; fi
+if [ "$(git config --global --get merge.ff)" = false ]; then ok "merge.ff=false"; else bad "merge.ff is not false"; fi
+policy=${VISIBILITY_GUARD_POLICY:-$HOME/.config/git/visibility-policy.toml}
+if [ -f "$policy" ]; then ok "visibility policy $policy"; else warn "no visibility policy: visibility-guard is a no-op"; fi
+if [ -n "$(git config --global --get user.email)" ]; then warn "global user.email is set (identity should be per repo)"; fi
+if [ -f "$HOME/.git-credentials" ]; then warn "~/.git-credentials exists (plain-text tokens)"; fi
+
+# agent
+if [ "$(readlink "$HOME/.claude/CLAUDE.md" 2>/dev/null)" = "$kit/agent/claude/CLAUDE.md" ]; then
+	ok "~/.claude/CLAUDE.md -> agent/claude/CLAUDE.md"
+elif [ -e "$HOME/.claude/CLAUDE.md" ]; then
+	bad "~/.claude/CLAUDE.md exists but is not linked to dev-kit"
+else
+	bad "~/.claude/CLAUDE.md missing"
+fi
+if command -v claude >/dev/null 2>&1; then ok "claude $(claude --version 2>/dev/null | head -1)"; else warn "claude (Claude Code) not installed"; fi
+if grep -q 'dev-kit/agent/claude/hooks/claude-notify.sh' "$HOME/.claude/settings.json" 2>/dev/null; then
+	ok "notify hook from dev-kit"
+else
+	warn "notify hook not configured from dev-kit (see agent/README.md)"
+fi
+
+# this clone
+push=$(git -C "$kit" remote get-url --push origin 2>/dev/null)
+printf 'INFO  origin push url: %s\n' "${push:-none}"
+if [ -n "$(git -C "$kit" status --porcelain 2>/dev/null)" ]; then warn "dev-kit has local changes"; fi
+
+exit $ng

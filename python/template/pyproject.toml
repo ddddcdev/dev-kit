@@ -1,0 +1,51 @@
+[project]
+name = "sample-app"
+version = "0.1.0"
+description = "One line: what this tool does."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "rich>=15.0.0",
+    "typer>=0.27.3",
+]
+
+[project.scripts]
+sample-app = "sample_app.cli:main"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.7.0",
+    "pyright>=1.1.414",
+    "pytest>=9.2.0",
+    "ruff>=0.17.3",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+target-version = "py314"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pyright]
+pythonVersion = "3.14"
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+markers = [
+    "unit: no I/O, fast",
+    "integration: files, env or network",
+    "smoke: CLI entry point and --help",
+]

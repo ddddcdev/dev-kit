@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+dist/
+*.log
+.env
+.scratch/
+.claude/settings.local.json
+.DS_Store

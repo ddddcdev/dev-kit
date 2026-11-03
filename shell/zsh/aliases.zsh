@@ -58,3 +58,4 @@ alias dcub='docker compose up --build'
 
 # etc
 alias repo='cd ~/repo && ls'
+alias treex='tree -a -I ".*|__pycache__|*.pyc|node_modules|.venv"'
