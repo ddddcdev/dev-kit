@@ -44,10 +44,11 @@ current markup and breaks when the site changes it. Last checked 2026-11-03.
 
 ### ↔ ChatGPT
 
-Overrides the conversation width variable; also wraps long code lines.
+Overrides the conversation width variable, keeps a side margin of 4% of the window (24–64px) for
+text, tables and the input box, and wraps long code lines.
 
 ```js
-javascript:(()=>{const id='dk-wide',o=document.getElementById(id);if(o){o.remove();return}const s=document.createElement('style');s.id=id;s.textContent='[class*="--thread-content-max-width"]{--thread-content-max-width:100%25!important;--thread-body-max-width:100%25!important}pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important}';document.head.appendChild(s)})();
+javascript:(()=>{const id='dk-wide',o=document.getElementById(id);if(o){o.remove();return}const s=document.createElement('style');s.id=id;s.textContent='[class*="--thread-content-max-width"]{--thread-content-max-width:100%25!important;--thread-body-max-width:100%25!important;padding-inline:clamp(24px,4vw,64px)!important}[class*="TableFrame"]{margin-inline:0!important;width:auto!important}[class*="TableViewport"]{padding-inline:0!important}pre{white-space:pre-wrap!important;overflow-wrap:anywhere!important}';document.head.appendChild(s)})();
 ```
 
 ### ↔ Gemini
