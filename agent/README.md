@@ -1,46 +1,53 @@
 # agent
 
-Standard instructions and hooks for AI coding agents (Claude Code first; the rule files are plain
-Markdown and work as `AGENTS.md` for other agents too).
+Instructions for AI coding agents. The definitions are plain Markdown and do not depend on one agent;
+each agent is connected to them by a link or a generated file.
 
-| file | role | installed as |
-|---|---|---|
-| `claude/CLAUDE.md` | global rules for every project | symlink `~/.claude/CLAUDE.md` |
-| `claude/output-styles/joint-ops-lite.md` | reply register (terse, no softening; persona and language set in one place each) | symlink in `~/.claude/output-styles/` |
-| `claude/hooks/claude-notify.sh` | desktop notification when a long turn ends or a permission prompt appears | hook command in `~/.claude/settings.json` |
-| `templates/AGENTS.md` | per-project instructions skeleton | copied into a new repo and filled in |
-| `templates/CLAUDE.md` | points Claude Code at `AGENTS.md` | copied into a new repo |
+| file | role |
+|---|---|
+| `global.md` | global rules for every project |
+| `joint-ops-lite.md` | reply style: terse, no softening, authority by domain; persona and language set in one place each. The frontmatter is read by Claude Code and stripped for other agents |
+| `claude/hooks/claude-notify.sh` | Claude Code only: desktop notification when a long turn ends or a permission prompt appears |
+| `templates/AGENTS.md`, `templates/CLAUDE.md` | per-project instructions skeleton |
 
-`claude/CLAUDE.md` and `claude/output-styles/` hold personal preferences, not a general standard.
+`global.md` and `joint-ops-lite.md` hold personal preferences, not a general standard.
 
 Layering: global rules (here) → project `AGENTS.md` (what this repo is, how to run and check it) →
 the code. Keep each layer to what the next one cannot tell the agent.
 
-## Install
+## Connect an agent
 
-### Global rules
+Before replacing an existing file, show it to the user and ask.
 
-```bash
-ls -l ~/.claude/CLAUDE.md 2>/dev/null   # existing file: show it to the user before replacing
-mkdir -p ~/.claude
-ln -sfn ~/repo/dev-kit/agent/claude/CLAUDE.md ~/.claude/CLAUDE.md
-```
+### Claude Code
 
-Do not edit the linked file for one machine: every machine reads it. Machine- or project-specific
-rules go in that project's `CLAUDE.md` / `AGENTS.md`.
-
-### Output style
+Rules as the user memory file, style as an output style (kept separate: an output style sits higher in
+the system prompt than memory).
 
 ```bash
 mkdir -p ~/.claude/output-styles
-ln -sfn ~/repo/dev-kit/agent/claude/output-styles/joint-ops-lite.md ~/.claude/output-styles/joint-ops-lite.md
+ln -sfn ~/repo/dev-kit/agent/global.md ~/.claude/CLAUDE.md
+ln -sfn ~/repo/dev-kit/agent/joint-ops-lite.md ~/.claude/output-styles/joint-ops-lite.md
 ```
 
-Select it with `/output-style joint-ops-lite`, or make it the default by setting
+Select the style with `/output-style joint-ops-lite`, or make it the default with
 `"outputStyle": "joint-ops-lite"` in `~/.claude/settings.json` (ask the user first). A project's own
-`outputStyle` setting takes precedence.
+`outputStyle` takes precedence. `keep-coding-instructions: true` in the frontmatter keeps Claude Code's
+built-in engineering instructions; without it a custom style drops them.
 
-### Notify hook
+### Agents with one global instruction file
+
+Generate the file from both definitions. It is a copy, so regenerate after `git pull`
+(`bin/doctor` reports when it is stale).
+
+```bash
+sh ~/repo/dev-kit/bin/agent-instructions > ~/.codex/AGENTS.md      # Codex CLI
+sh ~/repo/dev-kit/bin/agent-instructions > ~/.gemini/GEMINI.md     # Gemini CLI
+```
+
+For any other agent, put the same output wherever it reads user-level instructions.
+
+### Notify hook (Claude Code)
 
 Needs `jq`. Notification backend per platform: WSL → Windows toast via `powershell.exe`;
 macOS → iTerm2 (OSC 9), else `terminal-notifier`, else `osascript`; Linux → `notify-send`.

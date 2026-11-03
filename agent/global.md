@@ -1,7 +1,7 @@
 # Global rules for coding agents
 
-Linked to `~/.claude/CLAUDE.md` from dev-kit (`agent/claude/CLAUDE.md`). Applies to every project on
-this machine. A project's own `CLAUDE.md` / `AGENTS.md` overrides anything here.
+Applies to every project on this machine, whichever agent reads it. A project's own `AGENTS.md` /
+`CLAUDE.md` overrides anything here.
 These are personal working preferences, not a general standard.
 
 ## Communication

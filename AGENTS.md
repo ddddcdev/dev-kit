@@ -9,10 +9,10 @@ You are setting up or maintaining a developer machine with this repo. Read this 
 - Every step is idempotent: check first, change only what is missing, re-run safely.
 - Ask before anything outside the home directory: `sudo`, `apt` / `brew`, `chsh`, Windows-side settings.
 - Do not store credentials or tokens for this repo. It is cloned read-only over HTTPS.
-- Never overwrite an existing user file. If `~/.zshrc`, `~/.claude/CLAUDE.md`, a git setting or a hook
+- Never overwrite an existing user file. If `~/.zshrc`, an agent's global instruction file, a git setting or a hook
   already holds something else, show it to the user and ask before replacing it. Back up as
   `<file>.bak-YYYYMMDD` when replacing.
-- Link, do not copy, for live files (`init.zsh`, `agent/claude/CLAUDE.md`, hook scripts), so that
+- Link, do not copy, for live files (`init.zsh`, `agent/global.md`, `agent/joint-ops-lite.md`, hook scripts), so that
   `git pull` here updates the machine.
 - Detect the platform once and use the matching commands in each `setup.md`:
   `uname -s` → `Darwin` = macOS; `Linux` with `microsoft` in `/proc/version` = WSL.
@@ -31,8 +31,8 @@ consistently.
 3. **git** — [git/setup.md](git/setup.md): global settings, then `sh git/hooks/install.sh`.
    Do not set `user.name` / `user.email` without asking; which identity to use is the user's call.
    Do not create a visibility policy unless the user provides one.
-4. **Agent** — [agent/README.md](agent/README.md): link `~/.claude/CLAUDE.md` and the output style,
-   install the notify hook.
+4. **Agent** — [agent/README.md](agent/README.md): connect the global rules and the reply style to each
+   agent the user runs (ask which), and install the notify hook for Claude Code.
 5. **Verify** — `sh bin/doctor`. Fix every `NG` line or report why it cannot be fixed.
 6. **Hand-off** — tell the user what to apply by hand: [themes](themes/setup.md),
    [VS Code](vscode/setup.md), [bookmarklets](bookmarklet/setup.md).

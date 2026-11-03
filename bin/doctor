@@ -50,18 +50,25 @@ if [ -n "$(git config --global --get user.email)" ]; then warn "global user.emai
 if [ -f "$HOME/.git-credentials" ]; then warn "~/.git-credentials exists (plain-text tokens)"; fi
 
 # agent
-if [ "$(readlink "$HOME/.claude/CLAUDE.md" 2>/dev/null)" = "$kit/agent/claude/CLAUDE.md" ]; then
-	ok "~/.claude/CLAUDE.md -> agent/claude/CLAUDE.md"
-elif [ -e "$HOME/.claude/CLAUDE.md" ]; then
-	bad "~/.claude/CLAUDE.md exists but is not linked to dev-kit"
-else
-	bad "~/.claude/CLAUDE.md missing"
+link_ok() { [ "$(readlink "$1" 2>/dev/null)" = "$2" ]; }
+if command -v claude >/dev/null 2>&1 || [ -d "$HOME/.claude" ]; then
+	if link_ok "$HOME/.claude/CLAUDE.md" "$kit/agent/global.md"; then
+		ok "claude: ~/.claude/CLAUDE.md -> agent/global.md"
+	elif [ -e "$HOME/.claude/CLAUDE.md" ]; then
+		bad "claude: ~/.claude/CLAUDE.md exists but is not linked to agent/global.md"
+	else
+		bad "claude: ~/.claude/CLAUDE.md missing"
+	fi
+	if link_ok "$HOME/.claude/output-styles/joint-ops-lite.md" "$kit/agent/joint-ops-lite.md"; then
+		ok "claude: output style joint-ops-lite linked"
+	else
+		warn "claude: output style joint-ops-lite not linked (see agent/README.md)"
+	fi
 fi
-if [ "$(readlink "$HOME/.claude/output-styles/joint-ops-lite.md" 2>/dev/null)" = "$kit/agent/claude/output-styles/joint-ops-lite.md" ]; then
-	ok "output style joint-ops-lite linked"
-else
-	warn "output style joint-ops-lite not linked (see agent/README.md)"
-fi
+for f in "$HOME/.codex/AGENTS.md" "$HOME/.gemini/GEMINI.md"; do
+	[ -e "$f" ] || continue
+	if sh "$kit/bin/agent-instructions" | cmp -s - "$f"; then ok "$f up to date"; else warn "$f differs from bin/agent-instructions (regenerate)"; fi
+done
 if command -v claude >/dev/null 2>&1; then ok "claude $(claude --version 2>/dev/null | head -1)"; else warn "claude (Claude Code) not installed"; fi
 if grep -q 'dev-kit/agent/claude/hooks/claude-notify.sh' "$HOME/.claude/settings.json" 2>/dev/null; then
 	ok "notify hook from dev-kit"

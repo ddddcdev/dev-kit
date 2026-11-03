@@ -35,7 +35,7 @@ only the install commands differ, and each `setup.md` lists both.
 |---|---|---|
 | [`shell/zsh/`](shell/zsh/setup.md) | aliases, `uv` wrapper, prompt theme | `~/.zshrc` sources `init.zsh` |
 | [`git/`](git/setup.md) | global git settings, hook dispatcher, public-push guard | `core.hooksPath` points at `git/hooks/` |
-| [`agent/`](agent/README.md) | rules for AI coding agents, Claude Code hooks, project templates | `~/.claude/CLAUDE.md` and hook scripts are symlinks into here |
+| [`agent/`](agent/README.md) | agent-neutral global rules and reply style, Claude Code hooks, project templates | linked (or generated) into each agent's config |
 | [`python/`](python/README.md) | Python project standard: uv, ruff, pyright, pytest, `make check` | templates copied into new projects |
 | [`themes/`](themes/setup.md) | font and terminal / editor colors | applied by hand (GUI settings) |
 | [`vscode/`](vscode/setup.md) | VS Code extensions and settings | applied by hand |
@@ -44,7 +44,7 @@ only the install commands differ, and each `setup.md` lists both.
 ## Personal customization
 
 The colors, fonts, prompt theme, editor settings, bookmarklets and the agent rules and reply style in
-`agent/claude/` are one person's preferences. They are not proposed as a general standard.
+`agent/` are one person's preferences. They are not proposed as a general standard.
 Fork and change them freely.
 
 ## Live files
