@@ -41,7 +41,7 @@ only the install commands differ, and each `setup.md` lists both.
 | [`rust/`](rust/README.md) | Rust project standard: rustup pin, clippy pedantic, nextest, cargo-deny, `just check` | reference config |
 | [`themes/`](themes/setup.md) | font and terminal / editor colors | applied by hand (GUI settings) |
 | [`vscode/`](vscode/setup.md) | VS Code extensions and settings | applied by hand |
-| [`bookmarklet/`](bookmarklet/setup.md) | browser bookmarklets | applied by hand |
+| [`bookmarklet/`](bookmarklet/setup.md) | browser bookmarklets | drag from `bookmarklet/index.html` |
 
 ## Personal customization
 
