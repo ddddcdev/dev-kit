@@ -4,7 +4,11 @@ You are setting up or maintaining a developer machine with this repo. Read this 
 
 ## Ground rules
 
+- Start with an inventory: run `sh bin/doctor`, show the result, and plan only the missing items.
+  The machine may already be partly set up; keep what works.
 - Every step is idempotent: check first, change only what is missing, re-run safely.
+- Ask before anything outside the home directory: `sudo`, `apt` / `brew`, `chsh`, Windows-side settings.
+- Do not store credentials or tokens for this repo. It is cloned read-only over HTTPS.
 - Never overwrite an existing user file. If `~/.zshrc`, `~/.claude/CLAUDE.md`, a git setting or a hook
   already holds something else, show it to the user and ask before replacing it. Back up as
   `<file>.bak-YYYYMMDD` when replacing.
@@ -25,7 +29,8 @@ consistently.
    (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
 2. **zsh** — [shell/zsh/setup.md](shell/zsh/setup.md). Ends with `init.zsh` sourced from `~/.zshrc`.
 3. **git** — [git/setup.md](git/setup.md): global settings, then `sh git/hooks/install.sh`.
-   Do not set `user.name` / `user.email` globally without asking; identity is per repo.
+   Do not set `user.name` / `user.email` without asking; which identity to use is the user's call.
+   Do not create a visibility policy unless the user provides one.
 4. **Agent** — [agent/README.md](agent/README.md): link `~/.claude/CLAUDE.md`, install the notify hook.
 5. **Verify** — `sh bin/doctor`. Fix every `NG` line or report why it cannot be fixed.
 6. **Hand-off** — tell the user what to apply by hand: [themes](themes/setup.md),

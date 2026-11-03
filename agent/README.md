@@ -10,6 +10,8 @@ Markdown and work as `AGENTS.md` for other agents too).
 | `templates/AGENTS.md` | per-project instructions skeleton | copied into a new repo and filled in |
 | `templates/CLAUDE.md` | points Claude Code at `AGENTS.md` | copied into a new repo |
 
+`claude/CLAUDE.md` holds personal preferences, not a general standard.
+
 Layering: global rules (here) → project `AGENTS.md` (what this repo is, how to run and check it) →
 the code. Keep each layer to what the next one cannot tell the agent.
 

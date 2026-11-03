@@ -8,7 +8,7 @@
 | `aliases.local.zsh` | machine-only aliases | no (`*.local.zsh` is gitignored) |
 | `themes/simple-ex.zsh-theme` | two-line prompt: time, path, git branch | yes |
 
-Same files on macOS and WSL. Edit them here, never copy them into `~/.zshrc`.
+The prompt theme and alias names are personal preferences. Same files on macOS and WSL. Edit them here, never copy them into `~/.zshrc`.
 
 ## 1. zsh and oh-my-zsh
 

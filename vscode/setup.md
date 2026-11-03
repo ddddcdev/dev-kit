@@ -1,8 +1,7 @@
 # VS Code
 
-Optional. Day-to-day work runs through an AI agent in the terminal; the editor is for reading
-diffs and occasional edits. Formatting and lint rules come from each project's `pyproject.toml`
-(see [python/README.md](../python/README.md)), so the editor and the agent agree.
+Personal preferences (see the README). Formatting and lint rules come from each project's
+`pyproject.toml` ([python/README.md](../python/README.md)), not from the editor.
 
 ### Extensions
 - Git

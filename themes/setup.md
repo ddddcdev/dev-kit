@@ -1,3 +1,7 @@
+# Themes
+
+Personal preferences, not a general standard (see the README).
+
 ## Font
 - [UDEV Gothic](https://github.com/yuru7/udev-gothic)
 

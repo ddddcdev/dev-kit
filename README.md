@@ -8,13 +8,17 @@ the agent follows [AGENTS.md](AGENTS.md).
 
 ## Setting up a machine
 
-Clone to `~/repo/dev-kit` (the paths below assume it), then hand it to the agent:
+Clone read-only to `~/repo/dev-kit` (the paths below assume it), then hand it to the agent:
 
 ```bash
 git clone https://github.com/kojimat/dev-kit.git ~/repo/dev-kit
+git -C ~/repo/dev-kit remote set-url --push origin DISABLED
 cd ~/repo/dev-kit
 claude "Set up this machine with dev-kit. Follow AGENTS.md."
 ```
+
+No credentials are needed and nothing can be pushed from the clone. Update with
+`git -C ~/repo/dev-kit pull --ff-only`.
 
 Check the result at any time:
 
@@ -24,17 +28,6 @@ sh ~/repo/dev-kit/bin/doctor
 
 Supported: macOS (zsh) and Linux / WSL2 on Windows (zsh). The same files are used on both;
 only the install commands differ, and each `setup.md` lists both.
-
-### Read-only clone (work machines)
-
-Where this repo is only consumed, clone it over HTTPS **without credentials** and disable push:
-
-```bash
-git clone https://github.com/kojimat/dev-kit.git ~/repo/dev-kit
-git -C ~/repo/dev-kit remote set-url --push origin DISABLED
-```
-
-Updating is then `git -C ~/repo/dev-kit pull --ff-only`. Nothing on that machine can push here.
 
 ## What is in it
 
@@ -47,6 +40,14 @@ Updating is then `git -C ~/repo/dev-kit pull --ff-only`. Nothing on that machine
 | [`themes/`](themes/setup.md) | font and terminal / editor colors | applied by hand (GUI settings) |
 | [`vscode/`](vscode/setup.md) | VS Code extensions and settings | applied by hand |
 | [`bookmarklet/`](bookmarklet/setup.md) | browser bookmarklets | applied by hand |
+
+## Personal customization
+
+The colors, fonts, prompt theme, editor settings, bookmarklets and the agent rules in
+`agent/claude/CLAUDE.md` are one person's preferences. They are not proposed as a general standard.
+Fork and change them freely.
+
+## Live files
 
 Files under `shell/`, `git/hooks/` and `agent/` are **live**: a `git pull` here changes every
 machine that links to them. Keep them working on both macOS and WSL.

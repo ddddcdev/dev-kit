@@ -1,5 +1,7 @@
 # Bookmarklet
 
+Personal tools, not a general standard (see the README).
+
 
 ### 📋️Title+URL
 ```js
