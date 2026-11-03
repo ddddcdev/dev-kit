@@ -3,11 +3,11 @@
 Personal tools, not a general standard (see the README).
 
 Install: open [index.html](index.html) in the browser (`open bookmarklet/index.html` on macOS,
-`explorer.exe bookmarklet\\index.html` on WSL) and drag a button to the bookmarks bar. Or create a
+`explorer.exe "$(wslpath -w bookmarklet/index.html)"` on WSL) and drag a button to the bookmarks bar. Or create a
 bookmark and paste the code as its URL. After editing this file, regenerate the page with
 `python3 bookmarklet/build-page.py`.
 
- Copying uses the async Clipboard API and falls
+Copying uses the async Clipboard API and falls
 back to `execCommand('copy')` where it is not available.
 
 ## Copy
