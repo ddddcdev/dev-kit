@@ -31,7 +31,8 @@ consistently.
 3. **git** — [git/setup.md](git/setup.md): global settings, then `sh git/hooks/install.sh`.
    Do not set `user.name` / `user.email` without asking; which identity to use is the user's call.
    Do not create a visibility policy unless the user provides one.
-4. **Agent** — [agent/README.md](agent/README.md): link `~/.claude/CLAUDE.md`, install the notify hook.
+4. **Agent** — [agent/README.md](agent/README.md): link `~/.claude/CLAUDE.md` and the output style,
+   install the notify hook.
 5. **Verify** — `sh bin/doctor`. Fix every `NG` line or report why it cannot be fixed.
 6. **Hand-off** — tell the user what to apply by hand: [themes](themes/setup.md),
    [VS Code](vscode/setup.md), [bookmarklets](bookmarklet/setup.md).

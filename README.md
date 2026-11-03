@@ -43,8 +43,8 @@ only the install commands differ, and each `setup.md` lists both.
 
 ## Personal customization
 
-The colors, fonts, prompt theme, editor settings, bookmarklets and the agent rules in
-`agent/claude/CLAUDE.md` are one person's preferences. They are not proposed as a general standard.
+The colors, fonts, prompt theme, editor settings, bookmarklets and the agent rules and reply style in
+`agent/claude/` are one person's preferences. They are not proposed as a general standard.
 Fork and change them freely.
 
 ## Live files

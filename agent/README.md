@@ -6,11 +6,12 @@ Markdown and work as `AGENTS.md` for other agents too).
 | file | role | installed as |
 |---|---|---|
 | `claude/CLAUDE.md` | global rules for every project | symlink `~/.claude/CLAUDE.md` |
+| `claude/output-styles/joint-ops-lite.md` | reply register (Japanese, terse, no softening) | symlink in `~/.claude/output-styles/` |
 | `claude/hooks/claude-notify.sh` | desktop notification when a long turn ends or a permission prompt appears | hook command in `~/.claude/settings.json` |
 | `templates/AGENTS.md` | per-project instructions skeleton | copied into a new repo and filled in |
 | `templates/CLAUDE.md` | points Claude Code at `AGENTS.md` | copied into a new repo |
 
-`claude/CLAUDE.md` holds personal preferences, not a general standard.
+`claude/CLAUDE.md` and `claude/output-styles/` hold personal preferences, not a general standard.
 
 Layering: global rules (here) → project `AGENTS.md` (what this repo is, how to run and check it) →
 the code. Keep each layer to what the next one cannot tell the agent.
@@ -27,6 +28,17 @@ ln -sfn ~/repo/dev-kit/agent/claude/CLAUDE.md ~/.claude/CLAUDE.md
 
 Do not edit the linked file for one machine: every machine reads it. Machine- or project-specific
 rules go in that project's `CLAUDE.md` / `AGENTS.md`.
+
+### Output style
+
+```bash
+mkdir -p ~/.claude/output-styles
+ln -sfn ~/repo/dev-kit/agent/claude/output-styles/joint-ops-lite.md ~/.claude/output-styles/joint-ops-lite.md
+```
+
+Select it with `/output-style joint-ops-lite`, or make it the default by setting
+`"outputStyle": "joint-ops-lite"` in `~/.claude/settings.json` (ask the user first). A project's own
+`outputStyle` setting takes precedence.
 
 ### Notify hook
 

@@ -3,9 +3,6 @@
 # Python関連
 alias py='python'
 alias py3='python3'
-alias pi='pip install'
-alias pu='pip uninstall'
-alias pes='pipenv shell'
 
 # uv: load ./.env only when it exists (uv errors on a missing UV_ENV_FILE). An explicit UV_ENV_FILE wins.
 uv() {

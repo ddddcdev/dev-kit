@@ -57,6 +57,11 @@ elif [ -e "$HOME/.claude/CLAUDE.md" ]; then
 else
 	bad "~/.claude/CLAUDE.md missing"
 fi
+if [ "$(readlink "$HOME/.claude/output-styles/joint-ops-lite.md" 2>/dev/null)" = "$kit/agent/claude/output-styles/joint-ops-lite.md" ]; then
+	ok "output style joint-ops-lite linked"
+else
+	warn "output style joint-ops-lite not linked (see agent/README.md)"
+fi
 if command -v claude >/dev/null 2>&1; then ok "claude $(claude --version 2>/dev/null | head -1)"; else warn "claude (Claude Code) not installed"; fi
 if grep -q 'dev-kit/agent/claude/hooks/claude-notify.sh' "$HOME/.claude/settings.json" 2>/dev/null; then
 	ok "notify hook from dev-kit"
