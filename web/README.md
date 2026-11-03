@@ -23,6 +23,8 @@ Add vitest when there is logic worth unit-testing; verify UI in a headless brows
 `template/` is a working app (`sample-web`) with one sample page that shows every building block
 on the theme. It passes `npm run check` as is.
 
+![Sample page](sample.png)
+
 ```bash
 NAME=my-app
 cp -R ~/repo/dev-kit/web/template ~/repo/$NAME
