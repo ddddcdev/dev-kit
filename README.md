@@ -11,7 +11,7 @@ the agent follows [AGENTS.md](AGENTS.md).
 Clone read-only to `~/repo/dev-kit` (the paths below assume it), then hand it to the agent:
 
 ```bash
-git clone https://github.com/kojimat/dev-kit.git ~/repo/dev-kit
+git clone https://github.com/ddddcdev/dev-kit.git ~/repo/dev-kit
 git -C ~/repo/dev-kit remote set-url --push origin DISABLED
 cd ~/repo/dev-kit
 claude "Set up this machine with dev-kit. Follow AGENTS.md."
