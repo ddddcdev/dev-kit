@@ -12,7 +12,7 @@ oxlint, `tsc -b`, `vite build`).
 | styling | Tailwind CSS v4 |
 | components | shadcn/ui on Base UI (style `base-nova`), icons lucide |
 | lint / format | oxlint (`--deny-warnings`) / prettier (+ tailwind class sorting) |
-| fonts | self-hosted fontsource: Inter (text), Space Grotesk (headings), JetBrains Mono (code, keywords), BIZ UDPGothic (Japanese fallback for all three) |
+| fonts | self-hosted fontsource: Inter (text), Geist (headings), Geist Mono (navigation, keywords), JetBrains Mono (code), BIZ UDPGothic (Japanese fallback for all) |
 | agent gate on edit | Claude Code `PostToolUse` hook: prettier on every edited file, oxlint on `.ts`/`.tsx`; leftover errors go back to the agent |
 
 The UI talks to a separate API. Use Next.js only when static export or server rendering is required.
@@ -45,13 +45,14 @@ Every shadcn token is derived from five parameters on `:root`:
 
 | parameter | meaning | default |
 |---|---|---|
-| `--theme-hue` | background hue (OKLCH) | 250 |
-| `--theme-chroma` | background chroma multiplier (0 = grey) | 1 |
-| `--theme-accent-hue` | accent hue (OKLCH) | 15 |
+| `--theme-hue` | background hue (OKLCH) | 255 (slate) |
+| `--theme-chroma` | background chroma multiplier (0 = grey) | 0.5 |
+| `--theme-accent-hue` | accent hue (OKLCH) | 70 (amber, the complement) |
 | `--theme-accent-strength` | 0–1, text white mixed toward the vivid accent | 0.9 |
 | `--radius` | corner radius | 0.5rem |
 
-Change the parameters, not the tokens. Dark only (`<html class="dark">`).
+Keep the accent roughly opposite the background hue (about 180° apart), or set `--theme-chroma: 0`
+for a grey background with one accent. Change the parameters, not the tokens. Dark only (`<html class="dark">`).
 
 Rules carried by the theme:
 
@@ -63,8 +64,8 @@ Rules carried by the theme:
 - Code: fixed neutral dark (`#1a1c24`), mono font.
 - Text selection: accent fill, dark text.
 
-Font roles: plain text is the sans, `h1`–`h4` take the heading face, `text-keyword` for commands /
-IDs / navigation, `text-label` for small uppercase section kickers.
+Font roles: plain text is the sans, `h1`–`h4` take the heading face, `code` / `pre` the mono,
+`text-keyword` (Geist Mono) for navigation / commands / IDs, `text-label` for small uppercase section kickers.
 
 ## Components
 

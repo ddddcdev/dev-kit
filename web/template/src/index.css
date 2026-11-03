@@ -2,7 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
-@import "@fontsource-variable/space-grotesk";
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 @import "@fontsource-variable/jetbrains-mono";
 @import "@fontsource/biz-udpgothic/400.css";
 @import "@fontsource/biz-udpgothic/700.css";
@@ -12,8 +13,8 @@
 
 @theme inline {
   --font-sans: "Inter Variable", "BIZ UDPGothic", ui-sans-serif, sans-serif;
-  --font-heading:
-    "Space Grotesk Variable", "BIZ UDPGothic", ui-sans-serif, sans-serif;
+  --font-heading: "Geist Variable", "BIZ UDPGothic", ui-sans-serif, sans-serif;
+  --font-nav: "Geist Mono Variable", "BIZ UDPGothic", ui-monospace, monospace;
   --font-mono:
     "JetBrains Mono Variable", "BIZ UDPGothic", ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -73,8 +74,8 @@
 
 /* Font roles. Headings take the heading face automatically; plain text is the sans. */
 @utility text-keyword {
-  /* commands, IDs, navigation, short UI keywords */
-  font-family: var(--font-mono);
+  /* navigation, commands, IDs, short UI keywords */
+  font-family: var(--font-nav);
 }
 @utility text-label {
   /* small section kickers */

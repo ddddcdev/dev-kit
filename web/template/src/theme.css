@@ -7,9 +7,10 @@
    Dark only. <html class="dark"> keeps shadcn's dark: variants in step. */
 
 :root {
-  --theme-hue: 250;
-  --theme-chroma: 1;
-  --theme-accent-hue: 15;
+  /* slate background with its complement (amber) as the accent */
+  --theme-hue: 255;
+  --theme-chroma: 0.5;
+  --theme-accent-hue: 70;
   --theme-accent-strength: 0.9;
   --radius: 0.5rem;
 

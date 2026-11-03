@@ -33,8 +33,8 @@ export function App() {
         <h1 className="text-3xl font-semibold">Sample page</h1>
         <p className="text-muted-foreground">
           本文は sans、見出しは heading、
-          <span className="text-keyword">keyword</span> は mono。
-          日本語はどれも同じ字形に落ちる。
+          <span className="text-keyword">keyword</span> は nav、
+          <code>code</code> は mono。 日本語はどれも同じ字形に落ちる。
         </p>
       </header>
 
