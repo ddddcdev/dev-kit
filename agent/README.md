@@ -6,7 +6,7 @@ Markdown and work as `AGENTS.md` for other agents too).
 | file | role | installed as |
 |---|---|---|
 | `claude/CLAUDE.md` | global rules for every project | symlink `~/.claude/CLAUDE.md` |
-| `claude/output-styles/joint-ops-lite.md` | reply register (Japanese, terse, no softening) | symlink in `~/.claude/output-styles/` |
+| `claude/output-styles/joint-ops-lite.md` | reply register (terse, no softening; persona and language defined once at the top) | symlink in `~/.claude/output-styles/` |
 | `claude/hooks/claude-notify.sh` | desktop notification when a long turn ends or a permission prompt appears | hook command in `~/.claude/settings.json` |
 | `templates/AGENTS.md` | per-project instructions skeleton | copied into a new repo and filled in |
 | `templates/CLAUDE.md` | points Claude Code at `AGENTS.md` | copied into a new repo |
