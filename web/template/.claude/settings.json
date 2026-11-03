@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run check)",
+      "Bash(npm run lint)",
+      "Bash(npm run typecheck)",
+      "Bash(npm run format)",
+      "Bash(npm run build)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // empty'); cd \"$CLAUDE_PROJECT_DIR\" || exit 0; case \"$f\" in *.ts|*.tsx) npx prettier --write --log-level warn \"$f\" && npx oxlint --deny-warnings \"$f\" >&2 || exit 2 ;; *.css|*.json|*.html) npx prettier --write --log-level warn \"$f\" >&2 || exit 2 ;; esac"
+          }
+        ]
+      }
+    ]
+  }
+}

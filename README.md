@@ -37,6 +37,7 @@ only the install commands differ, and each `setup.md` lists both.
 | [`git/`](git/setup.md) | global git settings, hook dispatcher, public-push guard | `core.hooksPath` points at `git/hooks/` |
 | [`agent/`](agent/README.md) | agent-neutral global rules and reply style, Claude Code hooks, project templates | linked (or generated) into each agent's config |
 | [`python/`](python/README.md) | Python project standard: uv, ruff, pyright, pytest, `make check` | templates copied into new projects |
+| [`web/`](web/README.md) | Web UI standard: Vite, React, Tailwind, shadcn/ui, derived dark theme, `npm run check` | template copied into new apps |
 | [`rust/`](rust/README.md) | Rust project standard: rustup pin, clippy pedantic, nextest, cargo-deny, `just check` | reference config |
 | [`themes/`](themes/setup.md) | font and terminal / editor colors | applied by hand (GUI settings) |
 | [`vscode/`](vscode/setup.md) | VS Code extensions and settings | applied by hand |
@@ -44,7 +45,7 @@ only the install commands differ, and each `setup.md` lists both.
 
 ## Personal customization
 
-The colors, fonts, prompt theme, editor settings, bookmarklets and the agent rules and reply style in
+The colors, fonts, prompt theme, web UI theme, editor settings, bookmarklets and the agent rules and reply style in
 `agent/` are one person's preferences. They are not proposed as a general standard.
 Fork and change them freely.
 

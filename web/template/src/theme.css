@@ -1,0 +1,203 @@
+/* Theme: every shadcn token is derived from five parameters. Change these, not the tokens.
+     --theme-hue              background hue (OKLCH, 0-360)
+     --theme-chroma           background chroma multiplier (0 = grey, 1 = default, 2 = vivid)
+     --theme-accent-hue       accent hue (OKLCH, 0-360)
+     --theme-accent-strength  0-1: how far the text white is mixed toward the vivid accent
+     --radius                 corner radius
+   Dark only. <html class="dark"> keeps shadcn's dark: variants in step. */
+
+:root {
+  --theme-hue: 250;
+  --theme-chroma: 1;
+  --theme-accent-hue: 15;
+  --theme-accent-strength: 0.9;
+  --radius: 0.5rem;
+
+  /* surfaces, from raised to deep */
+  --theme-fg: #f0f0f0;
+  --theme-vivid: oklch(0.669 0.2213 var(--theme-accent-hue));
+  --theme-bg-raised: oklch(
+    41% calc(0.065 * var(--theme-chroma)) var(--theme-hue)
+  );
+  --theme-bg: oklch(33.64% calc(0.0574 * var(--theme-chroma)) var(--theme-hue));
+  --theme-bg-2: oklch(
+    26.5% calc(0.0455 * var(--theme-chroma)) var(--theme-hue)
+  );
+  --theme-field: oklch(
+    25.07% calc(0.0428 * var(--theme-chroma)) var(--theme-hue)
+  );
+  --theme-bg-darker: oklch(
+    22.05% calc(0.0376 * var(--theme-chroma)) var(--theme-hue)
+  );
+  --theme-bg-deep: oklch(
+    15.67% calc(0.0267 * var(--theme-chroma)) var(--theme-hue)
+  );
+  --theme-link: oklch(
+    84.46% calc(0.0384 * var(--theme-chroma)) var(--theme-hue)
+  );
+
+  --background: var(--theme-bg);
+  --foreground: var(--theme-fg);
+  --card: var(--theme-bg-2);
+  --card-foreground: var(--theme-fg);
+  --popover: var(--theme-bg-darker);
+  --popover-foreground: var(--theme-fg);
+  --primary: color-mix(
+    in oklch,
+    var(--theme-fg),
+    var(--theme-vivid) calc(var(--theme-accent-strength) * 100%)
+  );
+  /* near-black or white, whichever reads on the primary fill */
+  --primary-foreground: oklch(
+    from var(--primary) clamp(0.16, (0.75 - l) * 1000, 0.98) 0 0
+  );
+  --secondary: var(--theme-bg-raised);
+  --secondary-foreground: var(--theme-fg);
+  --muted: var(--theme-bg-2);
+  --muted-foreground: color-mix(in oklch, var(--theme-fg) 65%, var(--theme-bg));
+  --accent: var(--theme-bg-raised);
+  --accent-foreground: var(--theme-fg);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: color-mix(in oklch, var(--theme-fg) 18%, transparent);
+  --input: color-mix(in oklch, var(--theme-fg) 22%, transparent);
+  --ring: var(--theme-vivid);
+  --chart-1: oklch(0.72 0.16 var(--theme-accent-hue));
+  --chart-2: oklch(0.72 0.12 calc(var(--theme-accent-hue) + 72));
+  --chart-3: oklch(0.72 0.12 calc(var(--theme-accent-hue) + 144));
+  --chart-4: oklch(0.72 0.12 calc(var(--theme-accent-hue) + 216));
+  --chart-5: oklch(0.72 0.12 calc(var(--theme-accent-hue) + 288));
+  --sidebar: var(--theme-bg-darker);
+  --sidebar-foreground: var(--theme-fg);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--theme-bg-raised);
+  --sidebar-accent-foreground: var(--theme-fg);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  --theme-field-shade: inset 0 0 4px rgb(0 0 0 / 0.2);
+  --theme-button: color-mix(in srgb, var(--theme-fg) 82%, var(--theme-bg));
+}
+
+/* The rules below are unlayered on purpose: they win over the utilities in the components. */
+
+/* Text fields: a recessed field whose border is the field colour. Focus turns the 1px border to
+   the accent; no outer ring. */
+:is([data-slot="input"], [data-slot="textarea"], [data-slot="select-trigger"]) {
+  background: var(--theme-field);
+  border-color: var(--theme-field);
+  box-shadow: var(--theme-field-shade);
+}
+:is(
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"]
+):is(:focus-visible, [data-popup-open]) {
+  border-color: var(--ring);
+  box-shadow: var(--theme-field-shade);
+}
+:is(
+  [data-slot="input"],
+  [data-slot="textarea"],
+  [data-slot="select-trigger"]
+)[aria-invalid="true"] {
+  border-color: var(--destructive);
+  color: var(--destructive);
+}
+
+/* Buttons never move on press; a press is a colour change (the accent fill).
+     default    light fill, dark text; hover tints toward the link colour
+     secondary  barely lifted from the background, faint border
+     outline    no fill, link-colour text and border
+     ghost      text only; hover takes the accent
+     disabled   no fill, faint border and text */
+[data-button][data-variant="default"] {
+  background: var(--theme-button);
+  border-color: var(--theme-button);
+  color: var(--theme-bg-darker);
+}
+[data-button]:is([data-variant="default"], [data-variant="outline"]):hover {
+  background: color-mix(in srgb, var(--theme-link) 35%, var(--theme-fg));
+  border-color: var(--theme-link);
+  color: var(--theme-bg-darker);
+}
+[data-button]:is(
+    [data-variant="default"],
+    [data-variant="secondary"],
+    [data-variant="outline"]
+  ):active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--theme-bg-darker);
+}
+[data-button][data-variant="secondary"] {
+  background: hsl(from var(--background) h s calc(l + 2.5));
+  border-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+  color: var(--foreground);
+}
+[data-button][data-variant="secondary"]:is(:hover, :focus-visible):not(
+    :active
+  ) {
+  background: hsl(from var(--background) h s calc(l + 8));
+}
+[data-button][data-variant="outline"] {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--theme-link) 45%, transparent);
+  color: var(--theme-link);
+}
+[data-button][data-variant="ghost"] {
+  background: transparent;
+}
+[data-button][data-variant="ghost"]:is(:hover, :focus-visible) {
+  color: var(--primary);
+}
+[data-button]:is([data-variant="ghost"], [data-variant="link"]):active {
+  color: hsl(from var(--primary) h s calc(l - 25));
+}
+[data-button]:is(
+    [data-variant="default"],
+    [data-variant="secondary"],
+    [data-variant="outline"]
+  ):disabled {
+  opacity: 1;
+  background: transparent;
+  border-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+}
+
+/* Selected toggles: accent border and text over a faint accent fill. */
+:is(
+  [data-slot="toggle"],
+  [data-slot="toggle-group-item"]
+)[aria-pressed="true"] {
+  border-color: var(--ring);
+  color: var(--ring);
+  background: color-mix(in srgb, var(--ring) 10%, transparent);
+}
+
+::selection {
+  background: var(--primary);
+  color: var(--theme-bg-darker);
+}
+
+/* Code: a fixed neutral dark, independent of the hue. */
+:is(pre, code) {
+  background: #1a1c24;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+}
+pre {
+  padding: 16px;
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-size: 14px;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+}
+:not(pre) > code {
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.875em;
+}

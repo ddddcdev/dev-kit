@@ -49,6 +49,7 @@ Open a new shell afterwards (or `exec zsh`) so alias and function changes load.
 ## Starting a new project
 
 - Python: [python/README.md](python/README.md) — copy `python/template/`, then follow its checklist.
+- Web UI: [web/README.md](web/README.md) — copy `web/template/`, then follow its steps.
 - Rust: [rust/README.md](rust/README.md) — write the listed files; start on the latest stable toolchain.
 - Any language: copy `agent/templates/AGENTS.md` and `agent/templates/CLAUDE.md` into the repo root
   and fill in the placeholders.
