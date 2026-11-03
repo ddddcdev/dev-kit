@@ -47,6 +47,7 @@ These are personal working preferences, not a general standard.
 ## Tools and design
 
 - Python projects follow dev-kit `python/README.md` (uv, ruff, pyright, pytest, `make check`).
+- Rust projects follow dev-kit `rust/README.md` (pinned toolchain, clippy, nextest, cargo-deny, `just check`).
 - CLIs must be fully usable non-interactively (every input as an option, `--json` output, meaningful
   exit codes) so agents and cron can drive them. An interactive mode may exist next to it.
 - Logs go to files. Key=value lines (`YYYY-MM-DDTHH:MM:SS+0900 [tag] key=value ... status`) or JSON
