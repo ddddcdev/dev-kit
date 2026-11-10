@@ -1,0 +1,13 @@
+# Site settings read by build.py.
+name = "Sample Docs"
+lang = "en"
+copyright = '&copy;2026 Sample. Made with Python-Markdown and Jinja, styled after <a href="https://zensical.org/" target="_blank" rel="noopener">Zensical</a>'
+
+# Optional link before the site name in the header ("Parent › Sample Docs").
+[parent]
+name = "example.com"
+href = "https://example.com/"
+
+# Tab titles for the top-level directories under content/.
+[sections]
+guide = "Guide"

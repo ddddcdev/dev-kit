@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} - {{ site.name }}{% endblock %}
+{% block content %}
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol class="breadcrumb__list">
+    {% for c in crumbs %}
+    <li class="breadcrumb__item"><a class="breadcrumb__link" href="{{ c.href }}">{{ c.title }}</a></li>
+    {% endfor %}
+  </ol>
+</nav>
+<article class="prose">
+  {{ page.body | safe }}
+</article>
+{% endblock %}

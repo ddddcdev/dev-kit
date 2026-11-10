@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="{{ site.lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}{{ site.name }}{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,700&family=JetBrains+Mono:ital,wght@0,400;0,700;1,400&family=Poppins:wght@600;700&family=BIZ+UDPGothic:wght@400;700&display=swap"
+    />
+    <link rel="stylesheet" href="{{ static }}/theme.css" />
+  </head>
+  <body>
+    {# Drawer state for small screens: a checkbox, toggled by the labels below. #}
+    <input class="drawer-toggle visually-hidden" type="checkbox" id="drawer" autocomplete="off" />
+    <label class="drawer-overlay" for="drawer"></label>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <label class="site-header__button site-header__button--drawer" for="drawer" title="Navigation">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16M4 6h16M4 18h16" /></svg>
+        </label>
+        <div class="site-title">
+          {% if site.parent %}<a href="{{ site.parent.href }}">{{ site.parent.name }}</a><span class="site-title__sep">›</span>{% endif %}<a href="{{ home }}">{{ site.name }}</a>
+        </div>
+      </div>
+    </header>
+
+    <nav class="site-tabs" aria-label="Sections">
+      <ul class="site-tabs__list">
+        {% for tab in tabs %}
+        <li class="site-tabs__item{% if tab.active %} is-active{% endif %}">
+          <a class="site-tabs__link" href="{{ tab.href }}">{{ tab.title }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="layout">
+      <aside class="sidebar sidebar--primary" aria-label="Navigation">
+        <nav class="nav">
+          {# On small screens the tabs are hidden, so the drawer lists them too. #}
+          <ul class="nav__list">
+            {% for tab in tabs %}
+            {% if tab.active %}
+            <li>
+              <div class="nav__section">{{ tab.title }}</div>
+              <ul class="nav__list">
+                {% for item in nav %}
+                <li><a class="nav__link{% if item.active %} is-active{% endif %}" href="{{ item.href }}">{{ item.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            {% else %}
+            <li><a class="nav__link" href="{{ tab.href }}">{{ tab.title }}</a></li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+        </nav>
+      </aside>
+
+      {% if page.toc %}
+      <aside class="sidebar sidebar--secondary" aria-label="On this page">
+        {% include "toc.html" %}
+      </aside>
+      {% endif %}
+
+      <main class="content">
+        <div class="content__inner">
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
+
+    {% if page.toc %}
+    <details class="toc-float">
+      <summary>
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12h-8M21 6H8M21 18h-8M3 6v4c0 1.1.9 2 2 2h3M3 10v6c0 1.1.9 2 2 2h3" /></svg>
+        On this page
+      </summary>
+      {% include "toc.html" %}
+    </details>
+    {% endif %}
+
+    <button class="to-top" type="button">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7M12 19V5" /></svg>
+      Back to top
+    </button>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="copyright">{{ site.copyright | safe }}</div>
+      </div>
+    </footer>
+
+    <script src="{{ static }}/theme.js" defer></script>
+    <script type="module" src="{{ static }}/mermaid.js"></script>
+  </body>
+</html>

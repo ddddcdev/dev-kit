@@ -50,6 +50,7 @@ Open a new shell afterwards (or `exec zsh`) so alias and function changes load.
 
 - Python: [python/README.md](python/README.md) — copy `python/template/`, then follow its checklist.
 - Web UI: [web/README.md](web/README.md) — copy `web/template/`, then follow its steps.
+- Docs-style HTML from Markdown: [docs-theme/README.md](docs-theme/README.md) — copy `docs-theme/template/`.
 - Rust: [rust/README.md](rust/README.md) — write the listed files; start on the latest stable toolchain.
 - Any language: copy `agent/templates/AGENTS.md` and `agent/templates/CLAUDE.md` into the repo root
   and fill in the placeholders.

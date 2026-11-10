@@ -1,0 +1,18 @@
+{# "On this page": h2 and h3 from Python-Markdown's toc_tokens. #}
+<nav class="nav toc">
+  <div class="nav__title">On this page</div>
+  <ul class="nav__list">
+    {% for h in page.toc %}
+    <li>
+      <a class="nav__link" href="#{{ h.id }}">{{ h.name }}</a>
+      {% if h.children %}
+      <ul class="nav__list">
+        {% for c in h.children %}
+        <li><a class="nav__link" href="#{{ c.id }}">{{ c.name }}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+</nav>
