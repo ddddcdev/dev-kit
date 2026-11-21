@@ -13,3 +13,8 @@ Add a class with `attr_list`: `Text{ .class }`.
 
 !!! info
     Classes the theme does not style are left as they are.
+
+## Links
+
+Link to another page by its `.md` source: [the table on the sample page](../index.md#table). The build
+rewrites it to the `.html`, so the link also works in an editor or on GitHub.

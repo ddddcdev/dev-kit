@@ -1,7 +1,7 @@
 # Sample page
 
 Every building block of the theme on one page. The text is set in Inter at 15px with a line height of 1.8;
-links look [like this](guide/index.html), inline code like `make build`, keys like <kbd>Ctrl</kbd>+<kbd>C</kbd>,
+links look [like this](guide/index.md), inline code like `make build`, keys like <kbd>Ctrl</kbd>+<kbd>C</kbd>,
 and <mark>marked text</mark> like this.
 
 日本語の段落は BIZ UDPGothic で組まれる。英字の `Inter` と混ぜても、行の高さは変わらない。

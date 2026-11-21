@@ -4,4 +4,4 @@ A second tab, so the tabs, the left navigation and the breadcrumb have something
 
 ## Pages
 
-- [Writing](writing.html): what the Markdown can contain.
+- [Writing](writing.md): what the Markdown can contain.

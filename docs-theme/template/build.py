@@ -1,17 +1,22 @@
 """Build the sample site: content/**/*.md -> dist/**/*.html with Python-Markdown and Jinja.
 
 Top-level directories under content/ become tabs; the pages in a tab make the left navigation.
-Links are relative, so dist/ also opens from the file system.
+Links are relative, so dist/ also opens from the file system. A relative link to another page's .md
+(`[x](guide/writing.md#tables)`) is rewritten to its .html, so the sources link correctly in an editor too.
 """
 
 import shutil
 import tomllib
+import xml.etree.ElementTree as etree
 from dataclasses import dataclass, field
 from pathlib import Path, PurePosixPath
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import markdown
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from markdown.extensions import Extension
+from markdown.treeprocessors import Treeprocessor
 from pymdownx.superfences import fence_code_format
 
 ROOT = Path(__file__).parent
@@ -50,8 +55,54 @@ class Page:
         return self.url.parts[0] if len(self.url.parts) > 1 else ""
 
 
-def render_markdown(page: Page) -> None:
-    md = markdown.Markdown(extensions=EXTENSIONS, extension_configs=EXTENSION_CONFIGS)
+class MdLinks(Treeprocessor):
+    """Point relative links to .md pages at the .html built from them."""
+
+    def __init__(self, md: markdown.Markdown, page: Page, sources: set[PurePosixPath]) -> None:
+        super().__init__(md)
+        self.page = page
+        self.sources = sources
+
+    def run(self, root: etree.Element) -> None:
+        for a in root.iter("a"):
+            href = a.get("href", "")
+            parts = urlsplit(href)
+            if parts.scheme or parts.netloc or href.startswith("/") or not parts.path.endswith(".md"):
+                continue
+            target = resolve(self.page.url.parent, parts.path)
+            if target not in self.sources:
+                print(f"warning: {self.page.src.relative_to(ROOT)}: no page for link {href}")
+                continue
+            a.set("href", urlunsplit(parts._replace(path=parts.path[: -len(".md")] + ".html")))
+
+
+class MdLinksExtension(Extension):
+    def __init__(self, page: Page, sources: set[PurePosixPath]) -> None:
+        super().__init__()
+        self.page = page
+        self.sources = sources
+
+    def extendMarkdown(self, md: markdown.Markdown) -> None:  # noqa: N802 (Python-Markdown API)
+        md.treeprocessors.register(MdLinks(md, self.page, self.sources), "md_links", 0)
+
+
+def resolve(base: PurePosixPath, path: str) -> PurePosixPath | None:
+    """Normalise base/path (site-relative); None if it climbs above content/."""
+    parts: list[str] = []
+    for part in (base / path).parts:
+        if part == "..":
+            if not parts:
+                return None
+            parts.pop()
+        elif part != ".":
+            parts.append(part)
+    return PurePosixPath(*parts)
+
+
+def render_markdown(page: Page, sources: set[PurePosixPath]) -> None:
+    md = markdown.Markdown(
+        extensions=[*EXTENSIONS, MdLinksExtension(page, sources)], extension_configs=EXTENSION_CONFIGS
+    )
     page.body = md.convert(page.src.read_text(encoding="utf-8"))
     tokens: list[dict[str, Any]] = getattr(md, "toc_tokens", [])
     # The page title is the h1; "On this page" lists what sits under it.
@@ -81,8 +132,9 @@ def collect_pages() -> list[Page]:
 def main() -> None:
     site = tomllib.loads((ROOT / "site.toml").read_text(encoding="utf-8"))
     pages = collect_pages()
+    sources = {PurePosixPath(p.src.relative_to(CONTENT).as_posix()) for p in pages}
     for page in pages:
-        render_markdown(page)
+        render_markdown(page, sources)
 
     sections = sorted({p.section for p in pages}, key=lambda s: (s != "", s))
     titles = site.get("sections", {})

@@ -25,7 +25,7 @@ make serve         # http://localhost:8000 (Mermaid is an ES module: open over H
 
 | file | role |
 |---|---|
-| `build.py` | `content/**/*.md` → `dist/**/*.html`. Top-level dirs become tabs; links are relative |
+| `build.py` | `content/**/*.md` → `dist/**/*.html`. Top-level dirs become tabs; links are relative; `.md` links to pages become `.html` |
 | `site.toml` | site name, language, copyright line, optional parent link, tab titles |
 | `templates/base.html` | page frame: header band, tabs, left navigation, "On this page", footer |
 | `templates/page.html`, `toc.html` | breadcrumb + article; the table of contents |
