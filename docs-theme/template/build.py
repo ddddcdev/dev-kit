@@ -1,8 +1,9 @@
 """Build the sample site: content/**/*.md -> dist/**/*.html with Python-Markdown and Jinja.
 
 Top-level directories under content/ become tabs; the pages in a tab make the left navigation.
-Links are relative, so dist/ also opens from the file system. A relative link to another page's .md
-(`[x](guide/writing.md#tables)`) is rewritten to its .html, so the sources link correctly in an editor too.
+Links are relative, so dist/ also opens from the file system. A relative link to a .md
+(`[x](guide/writing.md#tables)`) is rewritten to .html, so the sources link correctly in an editor too.
+This holds when the page is not in this build (a warning says so); links above content/ are left as is.
 """
 
 import shutil
@@ -56,7 +57,7 @@ class Page:
 
 
 class MdLinks(Treeprocessor):
-    """Point relative links to .md pages at the .html built from them."""
+    """Point relative .md links at the .html built from them."""
 
     def __init__(self, md: markdown.Markdown, page: Page, sources: set[PurePosixPath]) -> None:
         super().__init__(md)
@@ -70,9 +71,13 @@ class MdLinks(Treeprocessor):
             if parts.scheme or parts.netloc or href.startswith("/") or not parts.path.endswith(".md"):
                 continue
             target = resolve(self.page.url.parent, parts.path)
-            if target not in self.sources:
-                print(f"warning: {self.page.src.relative_to(ROOT)}: no page for link {href}")
+            where = self.page.src.relative_to(ROOT)
+            if target is None:
+                print(f"warning: {where}: link {href} points outside content/, left as is")
                 continue
+            if target not in self.sources:
+                # Still rewritten: another build may put the page at the same relative path.
+                print(f"warning: {where}: link {href} has no page in this build, rewritten to .html")
             a.set("href", urlunsplit(parts._replace(path=parts.path[: -len(".md")] + ".html")))
 
 
